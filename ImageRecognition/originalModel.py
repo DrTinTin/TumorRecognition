@@ -92,3 +92,4 @@ def validate(model, train_loader, val_loader):
 
 
 validate(model, train_loader, val_loader)
+torch.save(model.state_dict(), data_path + 'birds_vs_airplanes.pt') # save the model
