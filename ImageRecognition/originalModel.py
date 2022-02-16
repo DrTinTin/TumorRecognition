@@ -89,5 +89,6 @@ def validate(model, train_loader, val_loader):
         print(f"Accuracy {name}: {correct / total:.2f}")  # f-string采用 {content:format} 设置字符串格式
 
 
+
 validate(model, train_loader, val_loader)
 torch.save(model.state_dict(), data_path + 'birds_vs_airplanes.pt')  # save the model
