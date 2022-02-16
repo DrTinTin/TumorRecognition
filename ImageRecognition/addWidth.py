@@ -20,25 +20,26 @@ training_set = [(img, label_map[label]) for img, label in cifar10 if label in [0
 validation_set = [(img, label_map[label]) for img, label in cifar10_val if label in [0, 2]]
 
 
-class Net_threeLayer(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.conv1 = nn.Conv2d(3, 16, kernel_size=3, padding=1)
-        self.conv2 = nn.Conv2d(16, 8, kernel_size=3, padding=1)
-        self.fc1 = nn.Linear(8 * 8 * 8, 32)
+class NetWidth(nn.Module):
+    def __init__(self, channel_num):
+        super(NetWidth, self).__init__()
+        self.channel_num = channel_num
+        self.conv1 = nn.Conv2d(3, channel_num, kernel_size=3, padding=1)
+        self.conv2 = nn.Conv2d(channel_num, channel_num // 2, kernel_size=3, padding=1)
+        self.fc1 = nn.Linear(8 * 8 * channel_num // 2, 32)
         self.fc2 = nn.Linear(32, 2)
 
     def forward(self, img):
         out = fun.max_pool2d(torch.tanh(self.conv1(img)), 2)
         out = fun.max_pool2d(torch.tanh(self.conv2(out)), 2)
-        out = out.view(-1, 8 * 8 * 8)
+        out = out.view(-1, 8 * 8 * self.channel_num // 2)
         out = torch.tanh(self.fc1(out))
         out = self.fc2(out)
         return out
 
 
 device = (torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu'))
-model = Net_threeLayer().to(device=device)
+model = NetWidth(channel_num=64).to(device=device)
 train_loader = torch.utils.data.DataLoader(training_set, batch_size=64, shuffle=True)
 optimizer = optim.SGD(model.parameters(), lr=1e-2)
 loss_fun = nn.CrossEntropyLoss()
@@ -90,4 +91,3 @@ def validate(model, train_loader, val_loader):
 
 
 validate(model, train_loader, val_loader)
-torch.save(model.state_dict(), data_path + 'birds_vs_airplanes.pt')  # save the model
