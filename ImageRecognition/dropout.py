@@ -1,3 +1,8 @@
+"""
+The idea behind dropout is to zero out a random fraction of outputs from neurons across the network,
+where the randomization happens at each training iteration
+"""
+
 import datetime
 from torchvision import datasets, transforms
 import numpy as np
