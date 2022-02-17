@@ -25,9 +25,9 @@ training_set = [(img, label_map[label]) for img, label in cifar10 if label in [0
 validation_set = [(img, label_map[label]) for img, label in cifar10_val if label in [0, 2]]
 
 
-class NetWidth(nn.Module):
+class NetDropout(nn.Module):
     def __init__(self, channel_num):
-        super(NetWidth, self).__init__()
+        super(NetDropout, self).__init__()
         self.channel_num = channel_num
         self.conv1 = nn.Conv2d(3, channel_num, kernel_size=3, padding=1)
         self.conv1_dropout = nn.Dropout2d(p=0.3)
@@ -48,7 +48,7 @@ class NetWidth(nn.Module):
 
 
 device = (torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu'))
-model = NetWidth(channel_num=64).to(device=device)
+model = NetDropout(channel_num=64).to(device=device)
 model.train()
 train_loader = torch.utils.data.DataLoader(training_set, batch_size=64, shuffle=True)
 optimizer = optim.SGD(model.parameters(), lr=1e-2)
