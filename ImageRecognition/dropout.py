@@ -49,6 +49,7 @@ class NetWidth(nn.Module):
 
 device = (torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu'))
 model = NetWidth(channel_num=64).to(device=device)
+model.train()
 train_loader = torch.utils.data.DataLoader(training_set, batch_size=64, shuffle=True)
 optimizer = optim.SGD(model.parameters(), lr=1e-2)
 loss_fun = nn.CrossEntropyLoss()
@@ -81,7 +82,7 @@ training_loop(
 
 train_loader = torch.utils.data.DataLoader(training_set, batch_size=64, shuffle=False)
 val_loader = torch.utils.data.DataLoader(validation_set, batch_size=64, shuffle=False)
-
+model.eval()
 
 def validate(model, train_loader, val_loader):
     for name, loader in [("train", train_loader), ("val", val_loader)]:
