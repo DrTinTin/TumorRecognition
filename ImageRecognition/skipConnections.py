@@ -1,16 +1,3 @@
-"""
-The main idea behind batch normalization is to rescale the inputs to the activations of the network
-so that minibatches have a certain desirable distribution.
-
-This helps avoid the inputs to activation functions being too far into the saturated portion of the function
-, thereby killing gradients and slowing training
-"""
-
-"""
-The idea behind dropout is to zero out a random fraction of outputs from neurons across the network,
-where the randomization happens at each training iteration
-"""
-
 import datetime
 from torchvision import datasets, transforms
 import numpy as np
